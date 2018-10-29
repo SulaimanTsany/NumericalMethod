@@ -13,7 +13,7 @@ public class Interpolasi {
             System.out.print("f(x["+i+"]) = ");
             f[i] = scan.nextDouble();
         }
-        System.out.printf("%.4f\n", metodeNewton(x, f));
+        System.out.printf("%.4f\n", metodeLagrange(x, f, 2));
     }
 
     public static double metodeNewton (double[] x, double[] f) {
@@ -32,5 +32,21 @@ public class Interpolasi {
             }
             return (metodeNewton(newX1, newF1)-metodeNewton(newX2, newF2))/(x[0]-x[x.length-1]);
         }
+    }
+
+    public static double metodeLagrange (double[] x, double[] f, double a) {
+        double result = 0;
+        double L = 1;
+        System.out.println();
+        for (int i=0; i<x.length; i++) {
+            L = 1;
+            for (int j=0; j<x.length; j++) {
+                if (i != j) {
+                    L *= ((a-x[j])/(x[i]-x[j]));
+                }
+            }
+            result += L*f[i];
+        }
+        return result;
     }
 }
