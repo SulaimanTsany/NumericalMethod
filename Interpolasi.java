@@ -1,22 +1,64 @@
-import java.util.Scanner;
-
 public class Interpolasi {
-    public static void main(String[] args) {
-        Scanner scan = new Scanner (System.in);
-        System.out.print("Input n = ");
-        int n = scan.nextInt();
-        double[] x = new double[n];
-        double[] f = new double[n];
-        for (int i=0; i<n; i++) {
-            System.out.print("x["+i+"] = ");
-            x[i] = scan.nextDouble();
-            System.out.print("f(x["+i+"]) = ");
-            f[i] = scan.nextDouble();
-        }
-        System.out.printf("%.4f\n", metodeLagrange(x, f, 2));
+
+    private double[] x;
+    private double[] f;
+
+    public Interpolasi (double[] x, double[] f) {
+        this.x = x;
+        this.f = f;
     }
 
-    public static double metodeNewton (double[] x, double[] f) {
+    public void showTable () {
+        System.out.print("  X  | ");
+        for (int i=0; i<x.length; i++) {
+            System.out.print(" "+x[i]);
+        }
+        System.out.print("\nf(x) | ");
+        for (int i=0; i<f.length; i++) {
+            System.out.print(" "+f[i]);
+        }
+        System.out.println();
+    }
+
+    //metode Interpolasi Lagrane
+    public double lagrange (double X) {
+        double result = 0;
+        double L = 1;
+        System.out.println();
+        for (int i=0; i<x.length; i++) {
+            L = 1;
+            for (int j=0; j<x.length; j++) {
+                if (i != j) {
+                    L *= ((X-x[j])/(x[i]-x[j]));
+                }
+            }
+            result += L*f[i];
+        }
+        return result;
+    }
+
+    //metode interpolasi Newton
+    public double newton (double X) {
+        double result = 0;
+        double b;
+        for (int i=0; i<x.length; i++) {
+            if (i==0) {
+                b = f[0];
+            } else {
+                b = metodeNewton(reverseArray(x,i), reverseArray(f, i));
+            }
+            // L disini yaitu variabel untuk menyimpan nilai (x-x1)(x-)
+            double L = 1;
+            for (int j=0; j<i; j++) {
+                L *= (X-x[j]);
+            }
+            result += b*L;
+        }
+        return result;
+    }
+
+    //untuk menghitung koefisien b pada metode interpolasi newton
+    private double metodeNewton (double[] x, double[] f) {
         if (x.length == 2) {
             return (f[0]-f[1])/(x[0]-x[1]);
         } else {
@@ -34,18 +76,12 @@ public class Interpolasi {
         }
     }
 
-    public static double metodeLagrange (double[] x, double[] f, double a) {
-        double result = 0;
-        double L = 1;
-        System.out.println();
-        for (int i=0; i<x.length; i++) {
-            L = 1;
-            for (int j=0; j<x.length; j++) {
-                if (i != j) {
-                    L *= ((a-x[j])/(x[i]-x[j]));
-                }
-            }
-            result += L*f[i];
+    private double[] reverseArray (double[] arr, int n) {
+        double[] result = new double[n+1];
+        int index = n;
+        for (int i=0; i<=n; i++) {
+            result[i] = arr[index];
+            index--;
         }
         return result;
     }
