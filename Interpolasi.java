@@ -6,6 +6,7 @@ public class Interpolasi {
     public Interpolasi (double[] x, double[] f) {
         this.x = x;
         this.f = f;
+        sort();
     }
 
     public void showTable () {
@@ -84,5 +85,30 @@ public class Interpolasi {
             index--;
         }
         return result;
+    }
+
+    private void sort () {
+        for (int i=0; i<x.length-1; i++) {
+            double tempX;
+            double tempFx;
+            int minPos = i;
+            double minValue = x[i];
+            for (int j=i+1; j<x.length; j++) {
+                if (minValue > x[j]) {
+                    minValue = x[j];
+                    minPos = j;
+                }
+            }
+            if (minPos != i) {
+                //swap x
+                tempX = x[i];
+                x[i] = x[minPos];
+                x[minPos] = tempX;
+                //swap fx
+                tempFx = f[i];
+                f[i] = f[minPos];
+                f[minPos] = tempFx;
+            }
+        }
     }
 }

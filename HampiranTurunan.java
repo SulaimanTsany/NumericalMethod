@@ -1,5 +1,5 @@
 public class HampiranTurunan {
-    
+
     private double[] x;
     private double[] fx;
     private double h;
@@ -31,15 +31,17 @@ public class HampiranTurunan {
     }
 
     public double diffKedua (int i) {
-        // i harus > 0 dan i < x.length
+        // i harus > 0 dan i < fx.length
         return (fx[i+1] - 2*fx[i] + fx[i-1])/(h*h);
     }
 
     public double diffKetiga (int i) {
+        // i harus > 1 dan i < fx.length-1
         return (fx[i+2] - 2*fx[i+1] + 2*fx[i-1] - fx[i-2])/(2*Math.pow(h, 3));
     }
 
     public double diffKeempat (int i) {
+        // i harus > 2 dan i < fx.length-2
         return (fx[i+2] - 4*fx[i+1] + 6*fx[i] - 4*fx[i-1] + fx[i-2])/Math.pow(h, 4);
     }
 
